@@ -101,16 +101,17 @@ module Authorization
         false  # Want to short-circuit the filters
       end
 
-      # Try to find current user by checking options hash and instance method in that order.
+      # Try to find current user by checking options hash and instance method in
+      # that order.
       def get_user
         if @options[:user]
           @options[:user]
         elsif @options[:get_user_method]
-          send( @options[:get_user_method] )
-        elsif self.respond_to? :current_user
+          send(@options[:get_user_method])
+        elsif respond_to?(:current_user, true)
           current_user
-        elsif not @options[:allow_guests]
-          raise( CannotObtainUserObject, "Couldn't find #current_user or @user, and nothing appropriate found in hash" )
+        elsif !@options[:allow_guests]
+          raise(CannotObtainUserObject, "Couldn't find #current_user or @user, and nothing appropriate found in hash")
         end
       end
 
